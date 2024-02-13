@@ -1,5 +1,6 @@
 import { Card, Typography } from 'antd';
 import Spinner from 'components/Spinner';
+import { PANEL_TYPES } from 'constants/queryBuilder';
 import { WidgetGraphProps } from 'container/NewWidget/types';
 import { useGetWidgetQueryRange } from 'hooks/queryBuilder/useGetWidgetQueryRange';
 import useUrlQuery from 'hooks/useUrlQuery';
@@ -28,7 +29,8 @@ function WidgetGraphContainer({
 	const selectedWidget = widgets.find((e) => e.id === widgetId);
 
 	const getWidgetQueryRange = useGetWidgetQueryRange({
-		graphType: selectedGraph,
+		graphType:
+			selectedGraph === PANEL_TYPES.BAR ? PANEL_TYPES.TIME_SERIES : selectedGraph,
 		selectedTime: selectedTime.enum,
 	});
 

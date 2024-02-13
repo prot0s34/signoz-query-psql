@@ -34,6 +34,9 @@ const GridPanelSwitch = forwardRef<
 				},
 				[PANEL_TYPES.LIST]: null,
 				[PANEL_TYPES.TRACE]: null,
+				[PANEL_TYPES.BAR]: {
+					title: 'Hello there',
+				},
 				[PANEL_TYPES.EMPTY_WIDGET]: null,
 			};
 

@@ -152,6 +152,8 @@ function FullView({
 				softMin: widget.softMin === undefined ? null : widget.softMin,
 			});
 
+			console.log({ newChartOptions });
+
 			setChartOptions(newChartOptions);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

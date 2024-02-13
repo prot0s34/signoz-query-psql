@@ -1,4 +1,5 @@
 import Uplot from 'components/Uplot';
+import UplotBar from 'components/UplotBar';
 import GridTableComponent from 'container/GridTableComponent';
 import GridValueComponent from 'container/GridValueComponent';
 
@@ -11,6 +12,7 @@ export const PANEL_TYPES_COMPONENT_MAP = {
 	[PANEL_TYPES.TRACE]: null,
 	[PANEL_TYPES.LIST]: null,
 	[PANEL_TYPES.EMPTY_WIDGET]: null,
+	[PANEL_TYPES.BAR]: UplotBar,
 } as const;
 
 export const AVAILABLE_EXPORT_PANEL_TYPES = [
