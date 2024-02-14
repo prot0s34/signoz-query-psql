@@ -65,6 +65,7 @@ function WidgetGraphContainer({
 			fillSpans={fillSpans}
 			softMax={softMax}
 			softMin={softMin}
+			selectedGraph={selectedGraph}
 		/>
 	);
 }

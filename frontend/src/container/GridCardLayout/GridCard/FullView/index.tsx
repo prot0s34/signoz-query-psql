@@ -150,9 +150,8 @@ function FullView({
 				maxTimeScale,
 				softMax: widget.softMax === undefined ? null : widget.softMax,
 				softMin: widget.softMin === undefined ? null : widget.softMin,
+				panelType: widget.panelTypes,
 			});
-
-			console.log({ newChartOptions });
 
 			setChartOptions(newChartOptions);
 		}

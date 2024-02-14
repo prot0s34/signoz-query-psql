@@ -119,7 +119,10 @@ function GridCardGraph({
 	const queryResponse = useGetQueryRange(
 		{
 			selectedTime: widget?.timePreferance,
-			graphType: widget?.panelTypes,
+			graphType:
+				widget?.panelTypes === PANEL_TYPES.BAR
+					? PANEL_TYPES.TIME_SERIES
+					: widget?.panelTypes,
 			query: updatedQuery,
 			globalSelectedInterval,
 			variables: getDashboardVariables(variables),
@@ -184,6 +187,7 @@ function GridCardGraph({
 				softMin: widget.softMin === undefined ? null : widget.softMin,
 				graphsVisibilityStates: graphVisibility,
 				setGraphsVisibilityStates: setGraphVisibility,
+				panelType: widget.panelTypes,
 			}),
 		[
 			widget?.id,
@@ -200,6 +204,7 @@ function GridCardGraph({
 			maxTimeScale,
 			graphVisibility,
 			setGraphVisibility,
+			widget.panelTypes,
 		],
 	);
 

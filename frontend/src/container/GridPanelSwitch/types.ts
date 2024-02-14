@@ -1,6 +1,5 @@
 import { StaticLineProps, ToggleGraphProps } from 'components/Graph/types';
 import { UplotProps } from 'components/Uplot/Uplot';
-import { UplotBarProps } from 'components/UplotBar/UplotBar';
 import { GridTableComponentProps } from 'container/GridTableComponent/types';
 import { GridValueComponentProps } from 'container/GridValueComponent/types';
 import { OnClickPluginOpts } from 'lib/uPlotLib/plugins/onClickPlugin';
@@ -34,6 +33,8 @@ export type PropsTypePropsMap = {
 	[PANEL_TYPES.TABLE]: GridTableComponentProps;
 	[PANEL_TYPES.TRACE]: null;
 	[PANEL_TYPES.LIST]: null;
-	[PANEL_TYPES.BAR]: UplotBarProps;
+	[PANEL_TYPES.BAR]: UplotProps & {
+		ref: ForwardedRef<ToggleGraphProps | undefined>;
+	};
 	[PANEL_TYPES.EMPTY_WIDGET]: null;
 };
