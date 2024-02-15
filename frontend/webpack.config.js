@@ -2,6 +2,7 @@
 // shared config (dev and prod)
 const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
 const portFinderSync = require('portfinder-sync');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
@@ -35,6 +36,13 @@ const plugins = [
 			CLARITY_PROJECT_ID: process.env.CLARITY_PROJECT_ID,
 		}),
 	}),
+	sentryWebpackPlugin({
+		authToken: process.env.SENTRY_AUTH_TOKEN,
+
+		org: 'signoz-iw',
+
+		project: 'javascript-react',
+	}),
 ];
 
 if (process.env.BUNDLE_ANALYSER === 'true') {
@@ -46,7 +54,7 @@ if (process.env.BUNDLE_ANALYSER === 'true') {
  */
 const config = {
 	mode: 'development',
-	devtool: 'eval-source-map',
+	devtool: 'source-map',
 	entry: resolve(__dirname, './src/index.tsx'),
 	devServer: {
 		historyApiFallback: true,
