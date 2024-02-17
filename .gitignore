@@ -1,4 +1,4 @@
-
+pkg/query-service/query-service
 node_modules
 
 deploy/docker/environment_tiny/common_test

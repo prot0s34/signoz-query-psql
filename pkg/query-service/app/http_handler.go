@@ -17,7 +17,7 @@ import (
 	"github.com/SigNoz/govaluate"
 	"github.com/gorilla/mux"
 	jsoniter "github.com/json-iterator/go"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 	"github.com/prometheus/prometheus/promql"
 
 	"go.signoz.io/signoz/pkg/query-service/agentConf"

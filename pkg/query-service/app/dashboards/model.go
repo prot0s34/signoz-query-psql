@@ -36,61 +36,65 @@ var jobRERE = regexp.MustCompile("job(?s)=~(?s)\\\"{{.job}}\\\"")
 func InitDB(dataSourceName string) (*sqlx.DB, error) {
 	var err error
 
-	db, err = sqlx.Open("sqlite3", dataSourceName)
+	db, err = sqlx.Open("postgres", dataSourceName)
 	if err != nil {
 		return nil, err
 	}
 
-	table_schema := `CREATE TABLE IF NOT EXISTS dashboards (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		uuid TEXT NOT NULL UNIQUE,
-		created_at datetime NOT NULL,
-		updated_at datetime NOT NULL,
-		data TEXT NOT NULL
-	);`
+	table_schema := `
+    CREATE TABLE IF NOT EXISTS dashboards (
+    id SERIAL PRIMARY KEY,
+    uuid UUID NOT NULL UNIQUE,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    data TEXT NOT NULL);
+  `
 
 	_, err = db.Exec(table_schema)
 	if err != nil {
 		return nil, fmt.Errorf("error in creating dashboard table: %s", err.Error())
 	}
 
-	table_schema = `CREATE TABLE IF NOT EXISTS rules (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		updated_at datetime NOT NULL,
-		deleted INTEGER DEFAULT 0,
-		data TEXT NOT NULL
-	);`
+	table_schema = `
+    CREATE TABLE IF NOT EXISTS rules (
+    id SERIAL PRIMARY KEY,
+    updated_at TIMESTAMP NOT NULL,
+    deleted INTEGER DEFAULT 0,
+    data TEXT NOT NULL);
+  `
 
 	_, err = db.Exec(table_schema)
 	if err != nil {
 		return nil, fmt.Errorf("error in creating rules table: %s", err.Error())
 	}
 
-	table_schema = `CREATE TABLE IF NOT EXISTS notification_channels (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		created_at datetime NOT NULL,
-		updated_at datetime NOT NULL,
-		name TEXT NOT NULL UNIQUE,
-		type TEXT NOT NULL,
-		deleted INTEGER DEFAULT 0,
-		data TEXT NOT NULL
-	);`
+	table_schema = `
+    CREATE TABLE IF NOT EXISTS notification_channels (
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
+    name TEXT NOT NULL UNIQUE,
+    type TEXT NOT NULL,
+    deleted BOOLEAN DEFAULT FALSE,
+    data TEXT NOT NULL);
+  `
 
 	_, err = db.Exec(table_schema)
 	if err != nil {
 		return nil, fmt.Errorf("error in creating notification_channles table: %s", err.Error())
 	}
 
-	table_schema = `CREATE TABLE IF NOT EXISTS ttl_status (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		transaction_id TEXT NOT NULL,
-		created_at datetime NOT NULL,
-		updated_at datetime NOT NULL,
-		table_name TEXT NOT NULL,
-		ttl INTEGER DEFAULT 0,
-		cold_storage_ttl INTEGER DEFAULT 0,
-		status TEXT NOT NULL
-	);`
+	table_schema = `
+    CREATE TABLE IF NOT EXISTS ttl_status (
+      id SERIAL PRIMARY KEY,
+      transaction_id UUID NOT NULL,
+      created_at TIMESTAMP NOT NULL,
+      updated_at TIMESTAMP NOT NULL,
+      table_name TEXT NOT NULL,
+      ttl INTEGER DEFAULT 0,
+      cold_storage_ttl INTEGER DEFAULT 0,
+      status TEXT NOT NULL);
+  `
 
 	_, err = db.Exec(table_schema)
 	if err != nil {
@@ -98,37 +102,37 @@ func InitDB(dataSourceName string) (*sqlx.DB, error) {
 	}
 
 	// sqlite does not support "IF NOT EXISTS"
-	createdAt := `ALTER TABLE rules ADD COLUMN created_at datetime;`
+	createdAt := `ALTER TABLE rules ADD COLUMN IF NOT EXISTS created_at timestamp;`
 	_, err = db.Exec(createdAt)
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		return nil, fmt.Errorf("error in adding column created_at to rules table: %s", err.Error())
 	}
 
-	createdBy := `ALTER TABLE rules ADD COLUMN created_by TEXT;`
+	createdBy := `ALTER TABLE rules ADD COLUMN IF NOT EXISTS created_by TEXT;`
 	_, err = db.Exec(createdBy)
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		return nil, fmt.Errorf("error in adding column created_by to rules table: %s", err.Error())
 	}
 
-	updatedBy := `ALTER TABLE rules ADD COLUMN updated_by TEXT;`
+	updatedBy := `ALTER TABLE rules ADD COLUMN IF NOT EXISTS updated_by TEXT;`
 	_, err = db.Exec(updatedBy)
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		return nil, fmt.Errorf("error in adding column updated_by to rules table: %s", err.Error())
 	}
 
-	createdBy = `ALTER TABLE dashboards ADD COLUMN created_by TEXT;`
+	createdBy = `ALTER TABLE dashboards ADD COLUMN IF NOT EXISTS created_by TEXT;`
 	_, err = db.Exec(createdBy)
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		return nil, fmt.Errorf("error in adding column created_by to dashboards table: %s", err.Error())
 	}
 
-	updatedBy = `ALTER TABLE dashboards ADD COLUMN updated_by TEXT;`
+	updatedBy = `ALTER TABLE dashboards ADD COLUMN IF NOT EXISTS updated_by TEXT;`
 	_, err = db.Exec(updatedBy)
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		return nil, fmt.Errorf("error in adding column updated_by to dashboards table: %s", err.Error())
 	}
 
-	locked := `ALTER TABLE dashboards ADD COLUMN locked INTEGER DEFAULT 0;`
+	locked := `ALTER TABLE dashboards ADD COLUMN IF NOT EXISTS locked INTEGER DEFAULT 0;`
 	_, err = db.Exec(locked)
 	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
 		return nil, fmt.Errorf("error in adding column locked to dashboards table: %s", err.Error())

@@ -8,7 +8,7 @@ import (
 	"github.com/knadh/koanf"
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/rawbytes"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 	"github.com/open-telemetry/opamp-go/protobufs"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"

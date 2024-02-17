@@ -1,6 +1,7 @@
 package constants
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"testing"
@@ -61,7 +62,14 @@ var AmChannelApiPath = GetOrDefaultEnv("ALERTMANAGER_API_CHANNEL_PATH", "v1/rout
 var OTLPTarget = GetOrDefaultEnv("OTLP_TARGET", "")
 var LogExportBatchSize = GetOrDefaultEnv("LOG_EXPORT_BATCH_SIZE", "1000")
 
-var RELATIONAL_DATASOURCE_PATH = GetOrDefaultEnv("SIGNOZ_LOCAL_DB_PATH", "/var/lib/signoz/signoz.db")
+var RELATIONAL_DATASOURCE_PATH = fmt.Sprintf(
+	"host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
+	GetOrDefaultEnv("POSTGRES_HOST", "localhost"),
+	GetOrDefaultEnv("POSTGRES_PORT", "5432"),
+	GetOrDefaultEnv("POSTGRES_USER", "postgres"),
+	GetOrDefaultEnv("POSTGRES_DB", "postgres"),
+	GetOrDefaultEnv("POSTGRES_PASSWORD", "postgres"),
+)
 
 var DurationSortFeature = GetOrDefaultEnv("DURATION_SORT_FEATURE", "true")
 

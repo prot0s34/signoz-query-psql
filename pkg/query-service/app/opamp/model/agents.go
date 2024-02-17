@@ -33,7 +33,7 @@ func (a *Agents) Count() int {
 func InitDB(dataSourceName string) (*sqlx.DB, error) {
 	var err error
 
-	db, err = sqlx.Open("sqlite3", dataSourceName)
+	db, err = sqlx.Open("postgres", dataSourceName)
 	if err != nil {
 		return nil, err
 	}
