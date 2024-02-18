@@ -2,10 +2,7 @@
 FROM alpine:3.18.5
 
 # Add Maintainer Info
-LABEL maintainer="signoz"
-
-# define arguments that can be passed during build time
-ARG TARGETOS TARGETARCH
+LABEL maintainer="prot0s34"
 
 # add ca-certificates in case you need them
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
@@ -14,11 +11,11 @@ RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 WORKDIR /root
 
 # copy the query-service binary
-COPY pkg/query-service/bin/query-service-${TARGETOS}-${TARGETARCH} /root/query-service
+COPY query-service /root/query-service
 
 # copy prometheus YAML config
-COPY pkg/query-service/config/prometheus.yml /root/config/prometheus.yml
-COPY pkg/query-service/templates /root/templates
+COPY config/prometheus.yml /root/config/prometheus.yml
+COPY templates /root/templates
 
 # Make query-service executable for non-root users
 RUN chmod 755 /root /root/query-service
